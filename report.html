@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance-Report</title>
+    <style>
+        *{
+            margin: 0;padding: 0;
+        }  
+        
+        .header{
+    background-color: rgb(233, 212, 23);
+    width:100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+}
+.main_nav ul{
+    display: flex;
+    padding: 10px 20px;
+    justify-content: space-around;
+    list-style: none;
+   
+    
+    
+    }
+ 
+    .main_nav li{
+         padding: 0px 20px;
+    }
+    .main_nav a:hover{
+      cursor: pointer;
+      color: red;
+      font-weight: 600;
+    }
+   a{
+    text-decoration: none;
+    color: whitesmoke;
+   }
+   #drop_label{
+    display: none;
+   }
+   #phone_drop{
+    display: none;
+   }
+   .header{
+    z-index: 1;
+   }
+   #start{
+        margin-top: 65px;
+      }
+      @media only screen and (max-width: 650px){
+         #name{
+          display: none;
+         }
+         .main_nav ul{
+          margin-top: 47px;
+          margin-left: 100%;
+          transition: margin 1s;
+         }
+         #drop_label{
+          display: block;
+          margin: auto 0;
+          margin-left: 30%;
+          
+         }
+          #output{
+            height: 90vw;
+            transform: rotate(-90deg);
+                   }
+         #phone_drop:checked~.main_nav ul{
+          margin-left: 0;
+  
+         }
+         .main_nav ul{
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          left: 0;
+          width: 100%;
+          text-align: center;
+          background-color:  aqua;
+         
+         }
+         .main_nav a{
+             padding: 10px;
+             margin-right: 40px;
+             color: black;
+             z-index: 1; 
+         }
+
+   }
+    </style>
+</head>
+<script>
+   if(localStorage.getItem("rgu_user")=="teacher"){
+      
+    }
+    else{
+      window.location ="login.html";
+    }
+    function search(){
+    
+    var course = document.getElementById("class").value;
+    var semester = document.getElementById("sem").value;
+    var section = document.getElementById("section").value;
+    var link;
+     if(course=="puc-2" && semester=="sem-2" && section=="B1"){
+    link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQaVAc84V28qcrUCAXgtVqliNGhKRvz40Qpbh8oW6bLKLt4tSWxant3MPY9vijRNO63nmRbsWq7McbM/pubhtml?widget=true&amp;headers=false";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B2"){
+        link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTBlRakwMymleQyb9ej58HHABIDYknJWMezWAEo4TS-ZS10WeHJEaM7sWarw9ftJ4kcyRKpCYyGG8iV/pubhtml?widget=true&amp;headers=false";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B3"){
+        link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR_FhgMBPH8KBXMazPxGEqoPVzregO89L32ZbyaKJRzUEtFNqrY9RZwmbEqiPMZofUrDGmWyTYlOBOU/pubhtml?widget=true&amp;headers=false";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B4"){
+        link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRHIcXFZnSsu-jUGdOslA7WRl3lL-kGnzww7FdDf5WdjtCx0QxQ3ZN0Z3ElZYgIa_5TF97dYerr1EIX/pubhtml?widget=true&amp;headers=false";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B5"){
+        link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSR5eauxsIhpIbHz9_VZpqUN5eV2xO-eIxViMa6AuPXzj-ppkLmTQLu7ov2P0SC5A4Vwo4WkiaFpBQ2/pubhtml?widget=true&amp;headers=false";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B6"){
+        link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQbYo9pUzPrsIWVw-rZR0_4UIAUvzrJ6EGV4s-r_q31IOTE4tqlHzqd-8dNy2pjvKAS7Vzsl21k2hL_/pubhtml?widget=true&amp;headers=false";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B7"){
+        link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQZyjV04EvOEkLIwvAUDlEbJ5h1ViSMx4EB3VTejhShD6QbR6ne9G8Bv-6P5_lrC9VudsGjtm9MxSJB/pubhtml?widget=true&amp;headers=false";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B8"){
+        link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwXGjtzVql56Vp0_aXAtIXRNzZ9Ez4QYWhATyrctCU1_gVnGPYDsP_SWAAoESBF5BC_96Px2Y2sbAH/pubhtml?widget=true&amp;headers=false";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B9"){
+        link = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQiqOOW5eVn9zq8qWaZ2u2HyPY64j3qlNb4w3YHPofgah1KXw8tFSYVsKzyMWZaynKkiM2FIzNrK0XN/pubhtml?widget=true&amp;headers=false";
+     }
+     else{
+        alert("can't find the sheet. Try again");
+        document.getElementById("loader").style.display = "none";
+     }
+     document.getElementById("output").setAttribute("src", link);
+    }
+</script>
+<body>
+    <div class="header">
+        <h3 style="padding: 9px;">RGUKT&nbsp;ATTENDANCE&nbsp;</h3>
+        <label for="phone_drop" id="drop_label">&#9776;</label>
+        <input type="checkbox" name="phone_drop" id="phone_drop">
+        <nav class="main_nav">
+          <ul>
+            <a href="index.html"><li>HOME</li></a>
+            <a href="search.html"><li>SEARCH</li></a>
+            <a href="report.html" target="_blank"><li>REPORT</li></a>
+            <a href="modify.html" target="_blank"><li>MODIFY</li></a>
+            <a href="about.html" target="_blank"><li>ABOUT</li></a>
+            <a href="https://www.rguktsklm.ac.in" target="_blank"><li>RGUKTSKLM</li></a>
+            <a href="" onclick="localStorage.setItem('rgu_user',' ')"><li>LOGOUT</li></a>
+          </ul>
+        </nav>
+       </div>
+    
+        <center style="border: solid 1px;" id="start">
+    
+    <p>Please Reload the page before searching for New Class Attendance Report</p>
+    <br>
+  <!--  <label for="SUBJECT">SUBJECT:</label>
+    <select class="subject" name="SUBJECT" id="subject" required>
+      <option value="telugu">TELUGU</option>
+      <option value="english">ENGLISH</option>
+        <option value="mathematics">MATHEMATICS</option>
+        <option value="physics">PHYSICS</option>
+        <option value="chemistry">CHEMISTRY</option>
+        <option value="information technology">IT</option>
+        <option value="biology">BIOLOGY</option>
+    </select>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+-->
+    <label for="CLASS">COURSE:</label>
+    <select class="cla" name="CLASS" id="class" required>
+        <option value="puc-1">PUC-1</option>
+        <option value="puc-2">PUC-2</option>
+    </select>
+    <br><br>
+    <label for="SEM">SEMESTER:</label>
+    <select class="sem" name="SEM" id="sem" required>
+        <option value="sem-1">SEM-1</option>
+        <option value="sem-2">SEM-2</option>
+    </select>
+    
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <label for="SECTION" >SECTION:</label>
+    <select class="section" name="SECTION" id="section" required >
+      <option value="B1">B1</option>
+      <option value="B2">B2</option>
+      <option value="B3">B3</option>
+      <option value="B4">B4</option>
+      <option value="B5">B5</option>
+      <option value="B6">B6</option>
+      <option value="B7">B7</option>
+      <option value="B8">B8</option>
+      <option value="B9">B9</option>
+    </select>
+    <br><br>
+    <input type="submit" value="Search" onclick="search();">
+    <br><br>
+    
+    <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSR5eauxsIhpIbHz9_VZpqUN5eV2xO-eIxViMa6AuPXzj-ppkLmTQLu7ov2P0SC5A4Vwo4WkiaFpBQ2/pubhtml?widget=true&amp;headers=false" width="85%" height="1000px" id="output"></iframe>
+    </center>
+    <footer style="text-align: center;background-color: #343a40;padding: 10px 0;position:sticky;width: 100%; bottom: 0;">© 2022 RGUKT-AP., Srikakulam Campus | Designed By: <a href="https://www.instagram.com/dileepadari/">Delhi</a> </footer>
+</body>
+</html>

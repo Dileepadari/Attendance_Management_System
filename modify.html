@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modification</title>
+    <style>
+                *{
+            margin: 0;padding: 0;
+        }  
+        
+        .header{
+    background-color: rgb(233, 212, 23);
+    width:100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+}
+.main_nav ul{
+    display: flex;
+    padding: 10px 20px;
+    justify-content: space-around;
+    list-style: none;
+   
+    
+    
+    }
+    .main_nav li{
+         padding: 0px 20px;
+    }
+    .main_nav a:hover{
+      cursor: pointer;
+      color: red;
+      font-weight: 600;
+    }
+   a{
+    text-decoration: none;
+    color: whitesmoke;
+   }
+   #drop_label{
+    display: none;
+   }
+   #phone_drop{
+    display: none;
+   }
+   .header{
+    z-index: 1;
+   }
+   #start{
+        margin-top: 65px;
+      }
+        @media only screen and (max-width: 650px){
+         #name{
+          display: none;
+         }
+         .main_nav ul{
+          margin-top: 47px;
+          margin-left: 100%;
+          transition: margin 1s;
+         }
+         #drop_label{
+          display: block;
+          margin: auto 0;
+          margin-left: 30%;
+          
+          
+         }
+         #phone_drop:checked~.main_nav ul{
+          margin-left: 0;
+  
+         }
+         .main_nav ul{
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          left: 0;
+          width: 100%;
+          text-align: center;
+          background-color:  aqua;
+         
+         }
+         .main_nav a{
+             padding: 10px;
+             color: black;
+             z-index: 1; 
+         }
+
+   }
+    </style>
+</head>
+<body>
+    <script>
+       if(localStorage.getItem("rgu_user")=="teacher"){
+      
+   }
+   else{
+     window.location ="login.html";
+   }
+        function search(){
+    
+    var course = document.getElementById("class").value;
+    var semester = document.getElementById("sem").value;
+    var section = document.getElementById("section").value;
+    var link;
+     if(course=="puc-2" && semester=="sem-2" && section=="B1"){
+    link = "https://docs.google.com/spreadsheets/d/150ovWDMQ3g8W540jc6bRaUDYulQ489je8Sj31t37wEQ";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B2"){
+        link = "https://docs.google.com/spreadsheets/d/1m2wWHENFQw6rS0gj0d-NX0llcKwLTshSH0oCq-7h2mo";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B3"){
+        link = "https://docs.google.com/spreadsheets/d/1-hCRFfJ_x0xmg1Yt61zFuJiyG9YsRdvRRdAaX08EHww";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B4"){
+        link = "https://docs.google.com/spreadsheets/d/1NNPp2wT4bVvmgPyneBDycOpumSiDa6RwxeurWgccA-c";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B5"){
+        link = "https://docs.google.com/spreadsheets/d/18JbYfsldrrQ9HeB3dyotY73mJGh--0zmHXJ4qcy3KxE";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B6"){
+        link = "https://docs.google.com/spreadsheets/d/1BbiKPyGZ625s7u4A5XxvfveeN0-4lBvSc6SVKhtzw4M";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B7"){
+        link = "https://docs.google.com/spreadsheets/d/1Fql39ZjrZzjCMGEJm1FLY-sdQOxBJc2FQepFtrXuxBo";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B8"){
+        link = "https://docs.google.com/spreadsheets/d/1W_eyZ36KTTqcD-Dyaj7R9Ibl9vvq5dSAFX28bXt3A8A";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B9"){
+        link = "https://docs.google.com/spreadsheets/d/17yrSMfyoZfZme4-3l-WVo8NwW8jb5tkgi3eSZ23FfD8";
+     }
+     else{
+        alert("can't find the sheet. Try again");
+        document.getElementById("loader").style.display = "none";
+        return false;
+     }
+     document.getElementById("mod_link").setAttribute("href", link);
+     document.getElementById("mod_link").style="display:block;color: red;";
+    }
+    </script>
+    <div class="header">
+        <h3 style="padding: 9px;">RGUKT&nbsp;ATTENDANCE&nbsp;</h3>
+        <label for="phone_drop" id="drop_label">&#9776;</label>
+        <input type="checkbox" name="phone_drop" id="phone_drop">
+        <nav class="main_nav">
+          <ul>
+            <a href="index.html"><li>HOME</li></a>
+            <a href="search.html"><li>SEARCH</li></a>
+            <a href="report.html" target="_blank"><li>REPORT</li></a>
+            <a href="modify.html" target="_blank"><li>MODIFY</li></a>
+            <a href="about.html" target="_blank"><li>ABOUT</li></a>
+            <a href="https://www.rguktsklm.ac.in" target="_blank"><li>RGUKTSKLM</li></a>
+            <a href="" onclick="localStorage.setItem('rgu_user',' ')"><li>LOGOUT</li></a>
+          </ul>
+        </nav>
+       </div>
+       <center style="border: solid 1px;" id="start">
+<br>
+       <label for="CLASS">COURSE:</label>
+    <select class="cla" name="CLASS" id="class" required>
+        <option value="puc-1">PUC-1</option>
+        <option value="puc-2">PUC-2</option>
+    </select>
+    <br><br>
+    <label for="SEM">SEMESTER:</label>
+    <select class="sem" name="SEM" id="sem" required>
+        <option value="sem-1">SEM-1</option>
+        <option value="sem-2">SEM-2</option>
+    </select>
+    
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <label for="SECTION" >SECTION:</label>
+    <select class="section" name="SECTION" id="section" required >
+      <option value="B1">B1</option>
+      <option value="B2">B2</option>
+      <option value="B3">B3</option>
+      <option value="B4">B4</option>
+      <option value="B5">B5</option>
+      <option value="B6">B6</option>
+      <option value="B7">B7</option>
+      <option value="B8">B8</option>
+      <option value="B9">B9</option>
+    </select>
+    <br><br>
+    <input type="submit" value="GET LINK" onclick="search();">
+    <br><br>
+    <a href="modify.html" id="mod_link" style=" display: none;">Click Here to Edit</a>
+    <footer style="text-align: center;background-color: #343a40;padding: 10px;position: absolute; bottom: 0;">© 2022 RGUKT-AP., Srikakulam Campus | Designed By: <a href="https://www.instagram.com/dileepadari/">Delhi</a> </footer>
+    </center>
+    
+</body>
+</html>

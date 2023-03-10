@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATTENDANCE-RGUKTSKLM</title>
+    <script>
+      if(localStorage.getItem("rgu_user")=="teacher"){
+      
+      }
+      else{
+        window.location ="login.html";
+      }
+    </script>
+<link
+      rel="stylesheet"
+      
+      crossorigin="anonymous"
+    />
+    <style>
+      *{
+       font-size: 1rem;
+      }
+      *{
+        margin: 0%;
+        padding: 0;
+      }
+      #start{
+        margin-top: 60px;
+      }
+        .invisible{
+            visibility:hidden!important
+        }
+        .form-group{
+          display: flex;
+            justify-content: space-evenly;
+            
+            
+        }
+        .unchange{
+          display: flex;
+            justify-content: space-around;
+            
+        }
+        
+        .header{
+    background-color: rgb(233, 212, 23);
+    width:100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+}
+.main_nav ul{
+    display: flex;
+    padding: 10px 20px;
+    justify-content: space-around;
+    list-style: none;
+   
+    
+    
+    }
+    .main_nav li{
+         padding: 0px 20px;
+    }
+    .main_nav a:hover{
+      cursor: pointer;
+      color: red;
+      font-weight: 600;
+    }
+   a{
+    text-decoration: none;
+    color: whitesmoke;
+   }
+   #drop_label{
+    display: none;
+   }
+   #phone_drop{
+    display: none;
+   }
+   .header{
+    z-index: 1;
+   }
+   /*code for phone*/
+   @media only screen and (max-width: 650px){
+         #name{
+          display: none;
+         }
+         .main_nav ul{
+          margin-top: 47px;
+          margin-left: 100%;
+          transition: margin 1s;
+         }
+         #drop_label{
+          display: block;
+          margin: auto 0;
+          margin-left: 30%;
+          
+          
+         }
+         #phone_drop:checked~.main_nav ul{
+          margin-left: 0;
+  
+         }
+         .main_nav ul{
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          left: 0;
+          width: 100%;
+          text-align: center;
+          background-color:  aqua;
+         
+         }
+         .main_nav a{
+             padding: 10px;
+             margin-right: 40px;
+             color: black;
+             z-index: 1; 
+         }
+
+   }
+   /*code for loader*/
+   #loader {
+    display: none;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; 
+  animation: spin 2s linear infinite;
+}
+
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+    </style>
+</head>
+<script>
+     
+    
+
+    var api_url;
+    function search(){
+      document.getElementById("loader").style.display = "block";
+      if(window.navigator.onLine==false){
+        window.alert("Please connect to internet!");
+      }
+    var subject = document.getElementById("subject").value;
+    var course = document.getElementById("class").value;
+    var semester = document.getElementById("sem").value;
+    var section = document.getElementById("section").value;
+    var link;
+     if(course=="puc-2" && semester=="sem-2" && section=="B1"){
+    link = "https://api.steinhq.com/v1/storages/62f0e81ebca21f053ea77753/";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B2"){
+        link = "https://api.steinhq.com/v1/storages/62f0e8bcbca21f053ea7776e/";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B3"){
+        link = "https://api.steinhq.com/v1/storages/62f0e5a6bca21f053ea776ec/";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B4"){
+        link = "https://api.steinhq.com/v1/storages/62f0e92b4906bb0537576a64/";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B5"){
+        link = "https://api.steinhq.com/v1/storages/62f0e9a34906bb0537576a6f/";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B6"){
+        link = "https://api.steinhq.com/v1/storages/62f332e6bca21f053ea7b88d/";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B7"){
+        link = "https://api.steinhq.com/v1/storages/62f333824906bb053757ab26/";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B8"){
+        link = "https://api.steinhq.com/v1/storages/62f334434906bb053757ab2c/";
+     }
+     else if(course=="puc-2" && semester=="sem-2" && section=="B9"){
+        link = "https://api.steinhq.com/v1/storages/62f3348fbca21f053ea7b8b8/";
+     }
+     else{
+      window.stop();
+        alert("can't find the sheet. Try again");
+        document.getElementById("loader").style.display = "none";
+        return false;
+        
+     }
+     
+    api_url = link+subject;
+    class_go = course+" "+semester+" "+section+" "+subject;
+    localStorage.setItem("class",class_go)
+    localStorage.setItem("link",api_url);
+
+    window.location= "main.html";
+      var data;
+// Defining async function
+     async function getapi(url) {
+    
+    // Storing response
+    const response = await fetch(url);
+    
+    // Storing data in form of JSON
+    data = await response.json();
+    var count = Object.keys(data[0]).length;
+   document.getElementById("sheet-form").setAttribute("data-stein-url", api_url);
+    document.getElementById("hide").style.display = "block";
+        var i = 1;
+        while (i<=(count-2)) {
+        document.getElementById("allforms").innerHTML+=`<hr><br><div class="form-group">
+        <div>`+i+`</div>
+        <div>`+data[0][i]+`</div>
+        <div style="width:200px;overflow:hidden;" id="name">`+data[1][i]+`</div>
+        <div class="attend">
+        <label for="link-input-lab">Present</label>
+        <input type="radio" id="link-input-rad" name="`+i+`" class="form-control-rad" checked value="1"/>
+        <label for="link-input-lab">Absent</label>
+        <input type="radio" id="link-input-rad" name="`+i+`" class="form-control-rad" value="0"/>
+    </div>`
+    i += 1
+        }
+        
+        run();
+        
+        
+        document.getElementById("loader").style.display = "none";
+        
+
+        
+   // show(data);
+}
+// Calling that async function
+getapi(api_url);
+
+       
+    }
+
+    function run(){
+      
+      
+      document.getElementById('date').value = new Date().toISOString().substring(0, 10);
+      
+        const submitButton = document.getElementById("submit"),
+        requestCompletedAlert = document.getElementById("completed-alert"),
+        form = document.getElementById("sheet-form");
+        
+      form.addEventListener("submit", () => {
+        
+        submitButton.disabled = true;
+        requestCompletedAlert.classList.add("invisible");
+        
+      });
+
+      form.addEventListener("ResponseReceived", event => {
+        if (event.detail.status === 200) {
+          requestCompletedAlert.classList.remove("invisible");
+          
+        }
+        submitButton.disabled = false;
+      });
+      
+    }
+</script>
+<body>
+  <div class="header">
+    <h3 style="padding: 9px;">RGUKT&nbsp;ATTENDANCE&nbsp;</h3>
+    <label for="phone_drop" id="drop_label">&#9776;</label>
+    <input type="checkbox" name="phone_drop" id="phone_drop">
+    <nav class="main_nav">
+      <ul>
+        <a href="index.html"><li>HOME</li></a>
+        <a href="search.html"><li>SEARCH</li></a>
+        <a href="report.html" target="_blank"><li>REPORT</li></a>
+        <a href="modify.html" target="_blank"><li>MODIFY</li></a>
+        <a href="about.html" target="_blank"><li>ABOUT</li></a>
+        <a href="https://www.rguktsklm.ac.in" target="_blank"><li>RGUKTSKLM</li></a>
+        <a href="" onclick="localStorage.setItem('rgu_user',' ')"><li>LOGOUT</li></a>
+      </ul>
+    </nav>
+   </div>
+
+    <center style="border: solid 1px;" id="start">
+
+<p>Please Reload the page before Entering New Class Attendance</p>
+<br>
+<label for="SUBJECT">SUBJECT:</label>
+<select class="subject" name="SUBJECT" id="subject" required>
+  <option value="telugu">TELUGU</option>
+  <option value="english">ENGLISH</option>
+    <option value="mathematics">MATHEMATICS</option>
+    <option value="physics">PHYSICS</option>
+    <option value="chemistry">CHEMISTRY</option>
+    <option value="information technology">IT</option>
+    <option value="biology">BIOLOGY</option>
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<label for="CLASS">COURSE:</label>
+<select class="cla" name="CLASS" id="class" required>
+    <option value="puc-1">PUC-1</option>
+    <option value="puc-2">PUC-2</option>
+</select>
+<br><br>
+<label for="SEM">SEMESTER:</label>
+<select class="sem" name="SEM" id="sem" required>
+    <option value="sem-1">SEM-1</option>
+    <option value="sem-2">SEM-2</option>
+</select>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label for="SECTION" >SECTION:</label>
+<select class="section" name="SECTION" id="section" required >
+  <option value="B1">B1</option>
+  <option value="B2">B2</option>
+  <option value="B3">B3</option>
+  <option value="B4">B4</option>
+  <option value="B5">B5</option>
+  <option value="B6">B6</option>
+  <option value="B7">B7</option>
+  <option value="B8">B8</option>
+  <option value="B9">B9</option>
+</select>
+<br><br>
+<input type="submit" value="Search" onclick="search();">
+<br><br>
+</center>
+<center>
+  <br>
+  <div id="loader"></div>
+<div class="container my-5" id="hide" style="display: none;">
+  
+    <form
+    data-stein-url="https://api.steinhq.com/v1/storages/62f0e81ebca21f053ea77753/english"
+      class="my-3"
+      id="sheet-form" 
+    >
+    <div class="unchange">
+          <div class="form-group">
+        <label for="title-input">DATE:</label>
+        <input
+        type="date"
+          id="date"
+          name="S. No"
+          class="form-control form-control-lg" required
+        />
+      </div>
+      <div class="form-group">
+        <label for="period">PERIOD:</label>
+        <select class="form-control" name="period" id="subject" required>
+            <option value="period-1">PERIOD-1</option>
+            <option value="period-2">PERIOD-2</option>
+            <option value="period-3">PERIOD-3</option>
+            <option value="period-4">PERIOD-4</option>
+            <option value="period-5">PERIOD-5</option>
+            <option value="period-6">PERIOD-6</option>
+            <option value="period-7">PERIOD-7</option>
+            <option value="period-8">PERIOD-8</option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div id="allforms">
+      <div class="form-group" style="margin-right: 50px;">
+        <div>S No:</div>
+        <div style="margin-right: 50px;">College ID NO:</div>
+        <div style="margin-right: 50px;" id="name">Name of the Student:</div>
+        <div class="attend">ATTENDANCE:</div>
+      <!--  <label for="link-input-lab">Present</label>
+        <input type="radio" id="link-input-rad" name="1" class="form-control-rad" disabled/>
+        <label for="link-input-lab">Absent</label>
+        <input type="radio" id="link-input-rad" name="1" class="form-control-rad" disabled/>-->
+    
+   
+</div>
+<br>
+      </div>
+      <br><br>
+      <button type="reset" class="btn btn-primary" id="reset">RESET</button>
+      &nbsp;&nbsp;&nbsp;
+      <button type="submit" class="btn btn-primary" id="submit" onclick="run();">
+        SUBMIT
+      </button>
+    </form>
+    <div
+      class="alert alert-success invisible"
+      role="alert"
+      id="completed-alert"
+    >
+    <br>
+      ATTENDANCE SUCCESSFULLY REGISTERED!
+    </div>
+    
+  </div>
+  
+  
+
+</center>
+<footer style="text-align: center;background-color: #343a40;padding: 10px 0;position:absolute;bottom: 0px;  width: 100vw; ">© 2022 RGUKT-AP., Srikakulam Campus | Designed By: <a href="https://www.instagram.com/dileepadari/">Delhi</a> </footer>
+</body>
+<script src="https://unpkg.com/stein-expedite@0.1.0/dist/index.js"></script>
+
+</html>
