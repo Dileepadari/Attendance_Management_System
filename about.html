@@ -1,147 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About-Attendance</title>
-    <style>
-        *{
-            color: antiquewhite;
-            margin: 0;
-            padding: 0;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            
-        }
-        body{
-            background-color: blue;
-            
-        }
-        p{
-            font-size: large;
-            font-family: cursive;
-            line-height: 30px;
-            padding: 10px;
-        }
-        h2{
-            margin-top: 20px;
-            padding: 15px;
-        }
-        .header{
-    background-color: rgb(233, 212, 23);
-    width:100%;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    position: fixed;
-    top: 0;
-}
-.main_nav ul{
-    display: flex;
-    padding: 10px 20px;
-    justify-content: space-around;
-    list-style: none;
-   
-    
-    
-    }
-    .main_nav li{
-         padding: 0px 20px;
-    }
-    .main_nav a:hover{
-      cursor: pointer;
-      color: red;
-
-      font-weight: 600;
-    }
-   a{
-    text-decoration: none;
-    color: whitesmoke;
-   }
-   #drop_label{
-    display: none;
-   }
-   #phone_drop{
-    display: none;
-   }
-   .header{
-    z-index: 1;
-   }
-        @media only screen and (max-width: 650px){
-         #name{
-          display: none;
-         }
-         .main_nav ul{
-          margin-top: 47px;
-          margin-left: 100%;
-          transition: margin 1s;
-         }
-         #drop_label{
-          display: block;
-          margin: auto 0;
-          margin-left: 30%;
-          
-          
-         }
-         #phone_drop:checked~.main_nav ul{
-          margin-left: 0;
-  
-         }
-         .main_nav ul{
-          display: flex;
-          flex-direction: column;
-          position: absolute;
-          left: 0;
-          width: 100%;
-          text-align: center;
-          background-color:  aqua;
-         
-         }
-         .main_nav a{
-             padding: 10px;
-             color: black;
-             margin-right: 40px;
-             z-index: 1; 
-         }
-
-   }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - RGUKT Attendance</title>
+  <meta name="description" content="How the attendance register works and how to connect your own sheets.">
+  <link rel="icon" href="assets/img/logo-mark.png">
+  <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
-    <script> if(localStorage.getItem("rgu_user")=="teacher"){
-      
-    }
-    else{
-      window.location ="login.html";
-    }</script>
-    <div class="header">
-        <h3 style="padding: 9px;">RGUKT&nbsp;ATTENDANCE&nbsp;</h3>
-        <label for="phone_drop" id="drop_label">&#9776;</label>
-        <input type="checkbox" name="phone_drop" id="phone_drop">
-        <nav class="main_nav">
-          <ul>
-            <a href="index.html"><li>HOME</li></a>
-            <a href="search.html"><li>SEARCH</li></a>
-            <a href="report.html" target="_blank"><li>REPORT</li></a>
-            <a href="about.html" target="_blank"><li>ABOUT</li></a>
-            <a href="https://www.rguktsklm.ac.in" target="_blank"><li>RGUKTSKLM</li></a>
-            <a href="" onclick="localStorage.setItem('rgu_user',' ')"><li>LOGOUT</li></a>
-          </ul>
-        </nav>
-       </div>
-    <h1 style="text-align:center;margin-top: 70px;">RGUKT ATTENDANCE SYSTEM</h1>
-    <h2>Introduction</h2>
-    <p>This project is made with HTML and Javascript aswell as css. Google sheets are used to store the data of the Attendance taken.Google Sheets Apis are used in the project inorder to get the data from google sheets.</p>
-    <br><br>
-    <h2>Tutorial</h2>
-    <p>The index page asks for the inputs of the course and the semester and also for class.When we enter the satisfactory input, It will take you to the Attendance taking page. you should select the date and the period the attendance was being taken.Then should select the present or absent in the attendance and should submit the info. The status will be showed at the end of the document. If the button disabled in the page , it means that the form is being submitted or your network is little bit slow. </p>
-    <br><br>
-    <h2>Reports</h2>
-    <p>The Reports of the Attendance can be seen in the Reports page by clicking on the link. On clicking on the link, It takes you to the reports page.You should Enter the details of the class you want to verify or modify.</p>
-    <h2>Vote of Thanks</h2>
-    <p>This is designed for education purposes by DILEEPKUMAR ADARI. </p>
-    <h1 style="text-align:center;" >Thanks for Visiting US</h1>
-<br>
-    <footer style="text-align: center;background-color: #343a40;padding: 10px; bottom: 0;">© 2022 RGUKT-AP., Srikakulam Campus | Designed By: <a href="https://www.instagram.com/dileepadari/">Delhi</a> </footer>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main class="page page-narrow prose" id="main">
+    <h1>About this register</h1>
+
+    <p>A Google Sheets workbook is the database. Each class has one workbook, each subject
+      is a tab inside it, and each row below the header is one period of one day. This site
+      is the interface teachers use so nobody has to scroll a spreadsheet on a phone.</p>
+
+    <p>It is plain HTML, CSS and JavaScript with no build step and no server. The pages read
+      and write the workbooks through <a href="https://steinhq.com" target="_blank" rel="noopener noreferrer">Stein</a>,
+      which puts a REST API in front of a Google Sheet.</p>
+
+    <h2>Using it</h2>
+    <ol>
+      <li><strong>Mark attendance</strong> loads the roster for a class and subject. Everyone
+        starts present, so a normal day is a few taps and a save.</li>
+      <li>Marks are saved as a draft in your browser as you go. Closing the tab by accident
+        does not lose the register.</li>
+      <li>Filing the same date and period twice asks before it replaces the earlier row,
+        rather than quietly recording the class twice.</li>
+      <li><strong>Student report</strong> totals every subject for one student and lists the
+        dates they missed. <strong>Class report</strong> ranks a whole class and flags anyone
+        below the requirement. Both export CSV.</li>
+      <li><strong>Edit sheets</strong> opens the workbook when something needs fixing by hand.</li>
+    </ol>
+
+    <h2 id="connect">Connecting your own sheets</h2>
+    <p>The workbooks this project shipped with in 2022 are no longer reachable, so it runs on
+      generated demo data out of the box. To point it at your own:</p>
+    <ol>
+      <li>Build a workbook per class, one tab per subject, laid out as described on the
+        <a href="modify.html">Edit sheets</a> page.</li>
+      <li>Connect each workbook at <a href="https://steinhq.com" target="_blank" rel="noopener noreferrer">steinhq.com</a>
+        and copy the storage id out of the API URL it gives you.</li>
+      <li>Put the ids into <code>CLASSES</code> in <code>assets/js/config.js</code> and set
+        <code>PROVIDER</code> to <code>'stein'</code>.</li>
+    </ol>
+    <p>Full setup notes are in <code>DEVDOC.md</code>.</p>
+
+    <h2>Where the data actually lives</h2>
+    <p id="provider-note"></p>
+    <div class="btn-row" id="demo-actions" hidden>
+      <button type="button" class="btn" id="reset-demo">Clear demo attendance</button>
+    </div>
+
+    <h2>A note on the sign-in</h2>
+    <p>The sign-in is a shared-device convenience, not a security boundary. The check runs in
+      your browser, so anyone who can open the page can get past it. What actually protects
+      the data is the Google account permissions on the workbooks themselves. Do not put
+      anything confidential behind this login.</p>
+
+    <h2>Credits</h2>
+    <p>Built for RGUKT-AP, Srikakulam Campus by
+      <a href="https://github.com/Dileepadari" target="_blank" rel="noopener noreferrer">Dileepkumar Adari</a>.</p>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script type="module" src="assets/js/pages/about.js"></script>
 </body>
 </html>

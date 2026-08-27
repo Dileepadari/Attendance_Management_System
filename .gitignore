@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+logs/
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Merge and patch leftovers
+*.orig
+*.rej
+*.bak
+
+# Lockfiles for package managers this project does not use
+bun.lockb
+yarn.lock
+pnpm-lock.yaml
+
+# Local environment
+.env
+.env.*
