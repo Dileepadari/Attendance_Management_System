@@ -7,6 +7,9 @@
   <meta name="description" content="Attendance across every subject for one student.">
   <link rel="icon" href="assets/img/logo-mark.png">
   <link rel="stylesheet" href="assets/css/app.css">
+  <!-- Applies the saved theme before first paint. Must stay render-blocking: a
+       deferred module would let the wrong theme flash on every navigation. -->
+  <script src="assets/js/theme-init.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>

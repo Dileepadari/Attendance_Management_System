@@ -9,6 +9,7 @@
 import { COURSES, PERIODS, SECTIONS, SEMESTERS, SUBJECTS, availableSections } from './config.js';
 import { currentSession, signOut } from './auth.js';
 import { isDemo } from './api.js';
+import { DARK, resolvedTheme, toggleTheme, watchSystemTheme } from './theme.js';
 
 const NAV = [
   { href: 'index.html', label: 'Mark attendance' },
@@ -74,10 +75,11 @@ export function renderHeader(currentPage) {
           el('strong', { text: 'RGUKT Attendance' }),
           el('small', { text: 'Srikakulam Campus' })),
       ),
+      // Order matters. The checkbox must precede .main-nav for the `:checked ~` selector
+      // that opens the mobile menu, and the theme toggle must follow .main-nav so it lands
+      // at the far right on desktop and beside the burger on mobile, where .main-nav is
+      // taken out of flow.
       toggle,
-      el('label', {
-        for: 'nav-toggle', class: 'nav-burger', 'aria-label': 'Toggle navigation', role: 'button', tabindex: '0',
-      }, '☰'),
       el('nav', { class: 'main-nav', 'aria-label': 'Main' },
         el('ul', {}, ...links,
           el('li', { class: 'nav-session' },
@@ -91,6 +93,10 @@ export function renderHeader(currentPage) {
               : el('a', { href: 'login.html', text: 'Sign in' })),
         ),
       ),
+      themeToggle(),
+      el('label', {
+        for: 'nav-toggle', class: 'nav-burger', 'aria-label': 'Toggle navigation', role: 'button', tabindex: '0',
+      }, '☰'),
     ),
   );
 
@@ -110,6 +116,50 @@ function renderDemoBanner(mount) {
       el('a', { href: 'about.html#connect', text: 'Connect your own sheets' }),
     ),
   );
+}
+
+/**
+ * Sun and moon glyphs, as inline SVG so they inherit `currentColor` and need no font or
+ * network request. `stroke="currentColor"` is what makes one file work in both themes.
+ */
+const ICONS = {
+  sun: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>',
+  moon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
+};
+
+/**
+ * Build the theme toggle.
+ *
+ * The button shows what a click will *do*, not what is currently on: a moon while the page
+ * is light, a sun while it is dark. That is the convention almost every site uses, and the
+ * aria-label spells it out either way so it does not rest on the icon alone.
+ */
+export function themeToggle() {
+  const button = el('button', {
+    type: 'button',
+    class: 'theme-toggle',
+    title: '',
+  });
+
+  const paint = () => {
+    const dark = resolvedTheme() === DARK;
+    button.innerHTML = dark ? ICONS.sun : ICONS.moon;
+    const label = dark ? 'Switch to light theme' : 'Switch to dark theme';
+    button.setAttribute('aria-label', label);
+    button.title = label;
+  };
+
+  button.addEventListener('click', () => {
+    toggleTheme();
+    paint();
+  });
+
+  // Keep the icon honest if the visitor flips their OS theme with the page open. Only
+  // fires while they have made no explicit choice of their own.
+  watchSystemTheme(paint);
+
+  paint();
+  return button;
 }
 
 export function renderFooter() {

@@ -1,12 +1,15 @@
 import { isSignedIn, redirectTarget, signIn } from '../auth.js';
 import { isDemo } from '../api.js';
-import { $, status } from '../ui.js';
+import { $, status, themeToggle } from '../ui.js';
 
 // Already signed in: go straight through rather than showing a form that will just
 // bounce. replace() keeps the login page out of the back-button history.
 if (isSignedIn()) {
   globalThis.location.replace(redirectTarget());
 }
+
+// The login page has no site header, so the toggle gets its own mount in the card.
+$('#theme-mount').replaceWith(themeToggle());
 
 const feedback = status();
 const form = $('#login-form');

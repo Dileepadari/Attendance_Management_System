@@ -204,6 +204,8 @@ assets/
     api.js              provider dispatch, transport, ApiError
     demo.js             the offline provider
     auth.js             sign-in, session, page guard
+    theme.js            light/dark preference, resolution, system watching
+    theme-init.js       classic script: applies the theme before first paint
     storage.js          localStorage that cannot throw
     ui.js               chrome, form helpers, toasts, modal, CSV download
     pages/              one controller per page, named after the page's job
@@ -230,6 +232,40 @@ under `:root[data-theme="dark"]`. That ordering means the system preference work
 default and an explicit `data-theme` wins in both directions. No colour is ever defined
 only inside a media block.
 
+### The toggle
+
+`theme.js` owns the preference, which has three states:
+
+| Stored value | `data-theme` on `<html>` | Result |
+|---|---|---|
+| none | absent | follows `prefers-color-scheme` |
+| `light` | `light` | forced light |
+| `dark` | `dark` | forced dark |
+
+A fresh visitor is in the first state, so the site matches their system with nobody having
+to choose. `toggleTheme()` flips against the **resolved** theme, not the stored one: a
+visitor on a dark system who clicks the toggle expects light, and flipping against the
+empty stored value would hand them dark again and read as a broken button.
+`watchSystemTheme()` keeps the icon truthful if the OS theme changes with the page open,
+and goes quiet once an explicit choice exists.
+
+The button lives in the site header, rendered by `ui.themeToggle()`. `login.html` has no
+header, so it mounts its own into the card via `#theme-mount`. The icon shows what a click
+will *do* (a moon while light, a sun while dark) and the `aria-label` says so in words, so
+nothing rests on the glyph alone.
+
+### Why theme-init.js is a separate classic script
+
+`assets/js/theme-init.js` is loaded from `<head>` with no `defer` and no `type="module"`.
+`<script type="module">` is deferred by definition, so it does not execute until after the
+document has parsed and painted: applying the theme from a module means a visitor who chose
+dark sees a white flash on every single navigation.
+
+The cost is that it cannot `import`, so it repeats the storage key and the guarded
+localStorage read. `theme.test.js` asserts the key matches `THEME_KEY` and that the file
+never grows an `import`, which is what stops the two drifting into a bug that presents as
+"my theme is forgotten when I change page".
+
 The logo is one file for both themes. It is solid purple on transparent, so it vanishes on
 a dark surface; `.logo-mono` applies `filter: brightness(0)` in light and
 `brightness(0) invert(1)` in dark, which flattens every opaque pixel while keeping the
@@ -238,7 +274,7 @@ alpha shape. There is no second recoloured file.
 ## Testing
 
 ```bash
-npm test          # 81 tests
+npm test          # 98 tests
 npm run test:watch
 ```
 
@@ -251,6 +287,7 @@ Node's built-in runner, no dependencies. Coverage by file:
 | `auth.test.js` | Credentials, session expiry, the open-redirect guard |
 | `api.test.js` | Transport against a stubbed `fetch`: bad shapes, 4xx/5xx, timeouts, retry policy |
 | `demo.test.js` | Determinism, round-tripping a write, roster uniqueness |
+| `theme.test.js` | The three preference states, toggle direction, system watching, and that theme-init.js stays in sync and stays a classic script |
 
 Fixtures use string cell values (`'1'`, not `1`) because that is what a Sheets cell
 actually returns. Tests written with numeric literals would pass while the app broke.
@@ -342,6 +379,13 @@ so whichever subject responded last decided the figure. `pages/student-report.js
 `Promise.allSettled` and totals once, after everything has landed. `allSettled` rather than
 `all` so one dead subject tab degrades to one "unavailable" row instead of blanking the
 report.
+
+**Auto margins stop a flex item stretching.** `body` is a full-height column flexbox so
+the footer pins to the bottom of short pages. `.page` centres itself with `margin: 0 auto`,
+and on a flex item auto margins on the cross axis absorb the free space *instead of*
+stretching, which silently collapsed the whole content region to fit its widest child. The
+fix is `width: 100%` on `main`; `max-width` still caps it and the auto margins still centre
+it. Any new direct child of `body` that centres itself needs the same treatment.
 
 **A failed save must not clear the draft.** At that moment the marks on screen are the only
 copy of the register. `pages/attendance.js` only clears the draft after a confirmed write.

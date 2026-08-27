@@ -46,6 +46,10 @@ For architecture, the sheet layout, and setup, see **[DEVDOC.md](./DEVDOC.md)**.
   <img src="./assets/img/screenshot-student-report.jpg" width="820" alt="A student report">
 </p>
 
+### Getting around
+- A light/dark toggle sits in the header, and on the sign-in card. It follows your system
+  setting until you pick a side, after which your choice sticks across pages and visits.
+
 ### Working with the sheets
 - **Edit sheets** links straight into the workbook behind any class, for the corrections
   this app deliberately does not do: renaming a student, adding a column, deleting a row

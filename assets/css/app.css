@@ -90,6 +90,29 @@ body {
   color: var(--text);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+
+  /* Sticky footer. A column flexbox at full viewport height with the main region set to
+     grow pins the footer to the bottom on a short page (the class picker before a roster
+     has loaded, or an error state) while still letting it be pushed down by a long one.
+     100dvh first so mobile browser chrome collapsing does not leave a gap; the 100vh line
+     above it is the fallback for browsers without dynamic viewport units. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+  /* .page carries `margin: 0 auto` for centering. On a flex item, auto margins on the
+     cross axis absorb the free space *instead of* stretching, so without an explicit
+     width the main region collapses to fit its content. width:100% restores the full
+     width; max-width still caps it and the auto margins still centre it. */
+  width: 100%;
+}
+
+.site-footer {
+  flex-shrink: 0;
 }
 
 /* The old pages set `* { font-size: 1rem }`, which flattened every heading. Headings
@@ -209,10 +232,26 @@ a:hover, a:focus-visible { text-decoration: underline; }
 
 .nav-session { margin-left: 8px; padding-left: 8px; border-left: 1px solid var(--border); }
 
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  margin-left: 8px;
+  padding: 0;
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.theme-toggle:hover { background: var(--surface-2); color: var(--text); }
+.theme-toggle svg { display: block; }
+
 .nav-toggle { display: none; }
 .nav-burger {
   display: none;
-  margin-left: auto;
   padding: 6px 10px;
   font-size: 1.3rem;
   line-height: 1;
@@ -223,6 +262,10 @@ a:hover, a:focus-visible { text-decoration: underline; }
 
 @media (max-width: 900px) {
   .nav-burger { display: block; }
+  /* .main-nav is absolutely positioned here, so the toggle is what pushes the burger to
+     the right edge. Keeping it outside the collapsed menu means the theme can be changed
+     without opening the nav. */
+  .theme-toggle { margin-left: auto; }
   .main-nav {
     display: none;
     margin-left: 0;
@@ -696,3 +739,6 @@ table.data tbody tr:hover { background: var(--surface-2); }
   white-space: nowrap;
   border: 0;
 }
+
+/* The login card has no header, so the toggle sits in the card's brand row. */
+.auth-brand .theme-toggle { margin-left: auto; }

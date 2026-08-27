@@ -7,6 +7,9 @@
   <meta name="description" content="Sign in to the RGUKT Srikakulam attendance register.">
   <link rel="icon" href="assets/img/logo-mark.png">
   <link rel="stylesheet" href="assets/css/app.css">
+  <!-- Applies the saved theme before first paint. Must stay render-blocking: a
+       deferred module would let the wrong theme flash on every navigation. -->
+  <script src="assets/js/theme-init.js"></script>
 </head>
 <body>
   <main class="auth-shell">
@@ -17,6 +20,7 @@
           <strong>RGUKT Attendance</strong>
           <small>Srikakulam Campus</small>
         </span>
+        <span id="theme-mount"></span>
       </div>
 
       <h1>Sign in</h1>
