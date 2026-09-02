@@ -15,11 +15,17 @@ does from a teacher's point of view, see [README.md](./README.md).
 - [Configuration](#configuration)
 - [Frontend structure](#frontend-structure)
 - [Theming](#theming)
+- [Seed and demo data](#seed-and-demo-data)
 - [Testing](#testing)
 - [Local development](#local-development)
+- [Continuous integration](#continuous-integration)
 - [Wiring up your own sheets](#wiring-up-your-own-sheets)
 - [Deployment](#deployment)
+- [Security notes](#security-notes)
+- [Documentation](#documentation)
 - [Known constraints and gotchas](#known-constraints-and-gotchas)
+- [Contributors](#contributors)
+- [Glossary](#glossary)
 
 ## Tech stack
 
@@ -35,23 +41,32 @@ browser: no DOM access in `sheet.js`, `config.js`, `api.js`, `auth.js` or `stora
 
 ## Architecture overview
 
-```
-  browser page (index.html, report.html, ...)
-        |
-        |  loads one module per page
-        v
-  assets/js/pages/*.js        page controllers: read the DOM, call the layers below
-        |
-        +--> ui.js            chrome, form helpers, toasts, modal, CSV download
-        +--> auth.js          sign-in, session, page guard
-        +--> sheet.js         pure parsing and stats over raw rows
-        |
-        v
-  assets/js/api.js            one interface, two providers, all error handling
-        |
-        +--> demo.js          generated roster + localStorage      (default)
-        |
-        +--> Stein REST API ------> Google Sheets workbook         (PROVIDER='stein')
+```mermaid
+flowchart TD
+  PAGE["HTML page<br/>index.html, report.html, search.html, modify.html, about.html"]
+  CTRL["assets/js/pages/*.js<br/>page controllers: read the DOM, call the layers below"]
+  UI["ui.js<br/>chrome, form helpers, toasts, modal, CSV download"]
+  AUTH["auth.js<br/>sign-in, session, page guard"]
+  THEME["theme.js<br/>light/dark, system follow"]
+  SHEET["sheet.js<br/>pure parsing and stats over raw rows"]
+  API["api.js<br/>one interface, two providers, all error handling"]
+  DEMO["demo.js<br/>generated roster in localStorage"]
+  STEIN["Stein REST API"]
+  GS[("Google Sheets workbook<br/>one tab per subject")]
+  STORE["storage.js<br/>localStorage that never throws"]
+
+  PAGE --> CTRL
+  CTRL --> UI
+  CTRL --> AUTH
+  CTRL --> SHEET
+  CTRL --> API
+  UI --> THEME
+  AUTH --> STORE
+  THEME --> STORE
+  API -->|"PROVIDER = demo, the default"| DEMO
+  API -->|"PROVIDER = stein"| STEIN
+  DEMO --> STORE
+  STEIN --> GS
 ```
 
 `sheet.js` is the centre of gravity. It knows the grid layout and nothing else: no fetch,
@@ -271,6 +286,24 @@ a dark surface; `.logo-mono` applies `filter: brightness(0)` in light and
 `brightness(0) invert(1)` in dark, which flattens every opaque pixel while keeping the
 alpha shape. There is no second recoloured file.
 
+## Seed and demo data
+
+Demo mode is not a fixture file. `demo.js` generates a roster and a term of attendance,
+seeded deterministically from the class key, and keeps it in `localStorage`. The same class
+produces the same 24 students and the same history on every machine, which is what makes
+the screenshots and the tests reproducible.
+
+| What | Value |
+|---|---|
+| Students per class | 24, with college ids in the `RS2001xx` range |
+| History | roughly a term of sessions per subject, backfilled so reports have shape |
+| Attendance spread | deliberately uneven, so a class report has students both above and below the 75% threshold |
+| Sign-in | `admin` / `admin` |
+
+Anything marked in demo mode is written back to `localStorage` and nothing leaves the
+browser. **Reset:** sign out, which clears every key under the `ams:` prefix, or clear
+site data.
+
 ## Testing
 
 ```bash
@@ -340,6 +373,78 @@ web server. There is nothing to build and nothing to run. `node_modules`, `test/
 Serve it over HTTPS. WebCrypto needs a secure context, and `http://` on anything other than
 `localhost` will break sign-in.
 
+## Continuous integration
+
+`.github/workflows/ci.yml`, on push and PR to `master`.
+
+| Job | Runs |
+|---|---|
+| **test** | `npm run lint` then `npm test`, matrixed over Node 20 and 22 |
+| **html** | `npm run check:links`, which asserts every local `href` and `src` in the pages resolves to a file on disk |
+
+There is no build step, so a renamed stylesheet or a moved script fails silently in the
+browser rather than at compile time. The link check is the closest thing to a compiler
+this project has, and it is the reason it exists as a CI job rather than a lint rule.
+
+`npm run lint` is `scripts/check-syntax.mjs`, a `node --check` sweep over every tracked
+`.js` and `.mjs` file. Deliberately not a linter: there is no style config here to enforce,
+and a parse error is the only thing CI needs to catch that the tests would not.
+
+## Security notes
+
+### The honest threat model
+
+This is a static site. There is no server, so there is no place to put a check a
+determined visitor cannot reach. Everything below follows from that.
+
+| Concern | Reality |
+|---|---|
+| Sign-in | A convenience gate. The hash is in `config.js` and the comparison runs in the browser, so anyone who opens devtools is past it in seconds. It exists so a staffroom machine left open does not sit on a roster, and so a casual visitor sees a login rather than the data |
+| What actually protects the data | Google account permissions on the workbooks. If the sheet is not shared publicly, the Stein storage is the only way in, and that is authorised against a Google account |
+| Password storage | SHA-256, unsalted. Adequate for a gate whose hash is public anyway; not adequate for anything else, and it should not be reused as a pattern |
+| Account enumeration | One message for both a wrong username and a wrong password. The original told you which half you got right, turning a guess into a two-step search |
+| Session lifetime | 12 hours, then re-login. The original set a localStorage flag that lived forever |
+| Open redirect | `redirectTarget` rejects absolute URLs, protocol-relative URLs and `..`, so `?next=` cannot bounce a visitor off-site |
+| Timing | `digestsMatch` compares the full length rather than short-circuiting. Mostly hygiene on fixed-length hex digests, but it costs nothing |
+
+**Do not put anything confidential behind this login.** That is not a limitation to work
+around; it is what a static site is.
+
+### Sheet identifiers in the repository
+
+`config.js` carries the `storageId`, `publishedId` and `documentId` of the 2022 RGUKT
+deployment. These are identifiers, not credentials:
+
+- `publishedId` is a **Publish to web** id, which is public by design.
+- `documentId` is the workbook id from the edit URL. Holding it grants nothing; access is
+  still decided by Google account permissions.
+- `storageId` addresses a Stein storage whose Google authorisation has lapsed, which is why
+  it returns `invalid_grant` and why demo mode is the default.
+
+They are left in place because they document the shape of a real configuration. Replace
+them with your own before pointing `PROVIDER` at `stein`, and if your workbooks hold
+anything you would not publish, keep the ids out of a public repository.
+
+### Writes
+
+A failed `POST` is never retried automatically. Stein appends, so retrying after a
+response that was actually delivered would record the class twice. Only `GET`s and
+network-level failures are retried.
+
+## Documentation
+
+`README.md` and `README-light.md` are the same page in two themes. GitHub has no theme
+toggle, so the toggle is a pair of files linking to each other, each using one screenshot
+set. Only `README.md` is edited by hand:
+
+```bash
+npm run docs:readme-light   # regenerates README-light.md from README.md
+```
+
+The script fails loudly if a marker it rewrites has gone missing, so the two cannot
+silently drift. Screenshots live under `docs/screenshots/<theme>/` with identical
+filenames in both.
+
 ## Known constraints and gotchas
 
 **The shipped sheet ids are dead.** The 2022 Stein storages return
@@ -389,3 +494,27 @@ it. Any new direct child of `body` that centres itself needs the same treatment.
 
 **A failed save must not clear the draft.** At that moment the marks on screen are the only
 copy of the register. `pages/attendance.js` only clears the draft after a confirmed write.
+
+## Contributors
+
+| Person | Owns |
+|---|---|
+| [Dileep Adari](https://github.com/Dileepadari) | Everything: the pages, the sheet layer, the demo provider and the tests |
+
+## Glossary
+
+| Term | Meaning |
+|---|---|
+| **Class** | One course, semester and section, backed by one Google Sheets workbook |
+| **Subject tab** | One sheet inside a workbook. Attendance for one subject lives here |
+| **Session** | One row: one date and one period, with a mark per student |
+| **Transposed grid** | The layout: one column per student rather than one row per student |
+| **Provider** | `demo` or `stein`. Which backend `api.js` talks to |
+| **Storage id** | The Stein.HQ id addressing one workbook over REST |
+| **Published id** | The `2PACX-...` id from Publish to web, used for the read-only embed |
+| **Threshold** | 75%. Below it a student is flagged in reports |
+
+---
+
+Minor and local implementation notes that do not belong in this document are kept in
+[not_for_you.md](./not_for_you.md).

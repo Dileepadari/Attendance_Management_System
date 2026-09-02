@@ -1,3 +1,5 @@
+<!-- Generated from README.md by scripts/build-light-readme.mjs. Do not edit by hand. -->
+
 <div align="center">
 
 <picture>
@@ -22,7 +24,7 @@
 
 **[Developer documentation](./DEVDOC.md)** · [Features](#features) · [Getting started](#getting-started)
 
-<p><b>Dark mode</b> · <a href="./README-light.md">View this page in light mode</a></p>
+<p><b>Light mode</b> · <a href="./README.md">View this page in dark mode</a></p>
 
 </div>
 
@@ -60,34 +62,34 @@ This version is the same idea rebuilt: one config, pure functions for the sheet 
 
 ## Screenshots
 
-Every image is a real 1440x900 viewport render, running on the built-in demo data. This page shows **dark mode**; the same gallery in light mode is at **[README-light.md](./README-light.md)**.
+Every image is a real 1440x900 viewport render, running on the built-in demo data. This page shows **light mode**; the same gallery in dark mode is at **[README.md](./README.md)**.
 
 <table>
   <tr>
     <td width="33%" valign="top">
-      <img src="./docs/screenshots/dark/01-mark-attendance.png" alt="Marking a register, with every student present by default" loading="lazy">
+      <img src="./docs/screenshots/light/01-mark-attendance.png" alt="Marking a register, with every student present by default" loading="lazy">
       <p align="center"><b>Mark attendance</b><br><sub>Everyone starts present, so a normal day is a few taps.</sub></p>
     </td>
     <td width="33%" valign="top">
-      <img src="./docs/screenshots/dark/02-student-report.png" alt="One student's attendance across every subject with the dates missed" loading="lazy">
+      <img src="./docs/screenshots/light/02-student-report.png" alt="One student's attendance across every subject with the dates missed" loading="lazy">
       <p align="center"><b>Student report</b><br><sub>Every subject for one student, with the exact dates missed.</sub></p>
     </td>
     <td width="33%" valign="top">
-      <img src="./docs/screenshots/dark/03-class-report.png" alt="A class ranked by attendance with those below 75 percent flagged" loading="lazy">
+      <img src="./docs/screenshots/light/03-class-report.png" alt="A class ranked by attendance with those below 75 percent flagged" loading="lazy">
       <p align="center"><b>Class report</b><br><sub>A whole class ranked, with everyone below 75% flagged.</sub></p>
     </td>
   </tr>
   <tr>
     <td width="33%" valign="top">
-      <img src="./docs/screenshots/dark/04-edit-sheets.png" alt="The edit sheets page linking into the workbook behind a class" loading="lazy">
+      <img src="./docs/screenshots/light/04-edit-sheets.png" alt="The edit sheets page linking into the workbook behind a class" loading="lazy">
       <p align="center"><b>Edit sheets</b><br><sub>Straight into the workbook, for what this app deliberately will not do.</sub></p>
     </td>
     <td width="33%" valign="top">
-      <img src="./docs/screenshots/dark/05-about.png" alt="The about page explaining the sheet layout and how to connect your own" loading="lazy">
+      <img src="./docs/screenshots/light/05-about.png" alt="The about page explaining the sheet layout and how to connect your own" loading="lazy">
       <p align="center"><b>About</b><br><sub>How the sheet is laid out, and how to point it at your own.</sub></p>
     </td>
     <td width="33%" valign="top">
-      <img src="./docs/screenshots/dark/06-sign-in.png" alt="The sign-in card with demo credentials shown" loading="lazy">
+      <img src="./docs/screenshots/light/06-sign-in.png" alt="The sign-in card with demo credentials shown" loading="lazy">
       <p align="center"><b>Sign in</b><br><sub>One shared teacher account. A convenience gate, not security.</sub></p>
     </td>
   </tr>
@@ -100,15 +102,15 @@ Filing attendance on a phone is the case this was built for, so the phone layout
 <table>
   <tr>
     <td width="22%" valign="top">
-      <img src="./docs/screenshots/responsive/dark/mobile-mark-attendance.png" alt="Marking attendance at 390px wide" loading="lazy">
+      <img src="./docs/screenshots/responsive/light/mobile-mark-attendance.png" alt="Marking attendance at 390px wide" loading="lazy">
       <p align="center"><sub><b>Mark attendance</b><br>390 x 844</sub></p>
     </td>
     <td width="22%" valign="top">
-      <img src="./docs/screenshots/responsive/dark/mobile-class-report.png" alt="Class report at 390px wide" loading="lazy">
+      <img src="./docs/screenshots/responsive/light/mobile-class-report.png" alt="Class report at 390px wide" loading="lazy">
       <p align="center"><sub><b>Class report</b><br>390 x 844</sub></p>
     </td>
     <td width="46%" valign="top">
-      <img src="./docs/screenshots/responsive/dark/tablet-mark-attendance.png" alt="Marking attendance at 820px wide" loading="lazy">
+      <img src="./docs/screenshots/responsive/light/tablet-mark-attendance.png" alt="Marking attendance at 820px wide" loading="lazy">
       <p align="center"><sub><b>Mark attendance</b><br>820 x 900</sub></p>
     </td>
   </tr>
