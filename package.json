@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "npx --yes http-server . -p 8080 -c-1 -o login.html",
-    "test": "node --test \"test/**/*.test.js\"",
-    "test:watch": "node --test --watch \"test/**/*.test.js\"",
+    "test": "node --test test/*.test.js",
+    "test:watch": "node --test --watch test/*.test.js",
     "hash": "node scripts/hash-password.mjs",
     "lint": "node scripts/check-syntax.mjs",
     "check:links": "node scripts/check-links.mjs",

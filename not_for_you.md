@@ -62,6 +62,7 @@ The original was four HTML pages with the logic inline. This is what was actuall
 
 ### Tests
 
+- `npm test` uses `node --test test/*.test.js`, unquoted, so the shell expands the glob. A quoted pattern relies on Node's own glob support, which only landed in Node 21: it passes locally on 22 and fails on 20 with "Could not find". CI caught this; nothing local would have.
 - The suite is heaviest on `sheet.js` because that is where a bug is silent: a wrong percentage looks like a number, not like an error.
 - `theme.test.js` needs a fake `matchMedia`; there is no jsdom here, so it is hand-stubbed.
 

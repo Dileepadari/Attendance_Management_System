@@ -380,6 +380,11 @@ Serve it over HTTPS. WebCrypto needs a secure context, and `http://` on anything
 | Job | Runs |
 |---|---|
 | **test** | `npm run lint` then `npm test`, matrixed over Node 20 and 22 |
+
+The test script uses a shell-expanded glob (`node --test test/*.test.js`) rather than a
+quoted one. Node's own glob expansion in `--test` only arrived in Node 21, so a quoted
+pattern fails on Node 20 with "Could not find" while passing on 22. Letting the shell
+expand it works on every supported version.
 | **html** | `npm run check:links`, which asserts every local `href` and `src` in the pages resolves to a file on disk |
 
 There is no build step, so a renamed stylesheet or a moved script fails silently in the
